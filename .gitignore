@@ -123,6 +123,7 @@ celerybeat.pid
 .env
 .venv
 .virt
+C:\Users\PMLS\Desktop\Django\Django-Ecom\virt
 env/
 venv/
 virt/
