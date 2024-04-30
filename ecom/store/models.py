@@ -5,6 +5,8 @@ class Category(models.Model): #catagorys for products
     name = models.CharField(max_length=50)
     def __str__(self) -> str:
         return self.name
+    class Meta : #this is for admin change name correctly to plural
+        verbose_name_plural = 'catagories'
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=50)
