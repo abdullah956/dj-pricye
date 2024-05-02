@@ -25,9 +25,17 @@
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
   </head>
   <body>
-    {%include 'navbar.html'%} {% comment %} the stuf that will change is the
-    stuf in between the block content {% endcomment %} {%block content%}
-    {%endblock%}
+    {%include 'navbar.html'%} {% if messages %} {%for message in messages%}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {%endfor%} {%endif%} {%block content%} {%endblock%}
 
     <!-- Footer-->
     <footer class="py-5 bg-dark">
@@ -43,3 +51,5 @@
     <script src="{% static 'js/scripts.js'%}"></script>
   </body>
 </html>
+{% comment %} the stuf that will change is the stuf in between the block content
+{% endcomment %}
