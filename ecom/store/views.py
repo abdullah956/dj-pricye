@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product
+from .models import Category, Product
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -52,3 +52,20 @@ def register_user(request):
 			return redirect('register')
 	else:
 		return render(request, 'register.html', {'form':form})
+      
+
+def product(request,pk): #passing primary key
+	product = Product.objects.get(id=pk)
+	return render(request, 'product.html', {'product':product})
+
+
+def category(request, foo):
+	# Grab the category from the url
+	try:
+		# Look Up The Category
+		category = Category.objects.get(name=foo)
+		products = Product.objects.filter(category=category)
+		return render(request, 'category.html', {'products':products, 'category':category})
+	except:
+		messages.success(request, ("That Category Doesn't Exist..."))
+		return redirect('home')
