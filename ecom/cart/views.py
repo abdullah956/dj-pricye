@@ -3,8 +3,15 @@ from .cart import Cart
 from store.models import Product
 from django.http import JsonResponse
 from django.contrib import messages
+
+
 def cart_summary(request):
-	return render(request, "cart_summary.html")
+	# Get the cart
+	cart = Cart(request)
+	cart_products = cart.get_prods
+	#quantities = cart.get_quants
+	#totals = cart.cart_total()
+	return render(request, "cart_summary.html", {"cart_products":cart_products})
 
 
 
@@ -21,12 +28,11 @@ def cart_add(request):
 		
 		# Save to session
 		cart.add(product=product)
-
-		# Get Cart Quantity
-
+		#get quantity
+		cart_quantity = cart.__len__()
 		# Return resonse
 		# response = JsonResponse({'Product Name: ': product.name})
-		response = JsonResponse({'Product Name':product.name })
+		response = JsonResponse({'qty':cart_quantity })
 		return response
 
 def cart_delete(request):
