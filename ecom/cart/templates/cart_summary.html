@@ -15,11 +15,12 @@
   {%if cart_products%} {%for product in cart_products%}
   <div class="card mb-3">
     <div class="row g-0">
-      <div class="col-md-4">
+      <div class="col-md-4 d-flex justify-content-center align-items-center">
         <img
           src="{{product.image.url}}"
           class="img-fluid rounded-start"
           alt="..."
+          style="max-height: 100%; max-width: 100%"
         />
       </div>
       <div class="col-md-8">
