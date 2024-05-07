@@ -13,4 +13,6 @@ urlpatterns = [
     #int pk means integer primary key
     path('category/<str:foo>', views.category, name='category'),
     #catagory will be name and foo is jsut a placeholder 
+    path('category_summary/', views.category_summary, name='category_summary'),
+
 ]
