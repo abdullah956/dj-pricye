@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Category, Product
+from .models import Category, Product, Profile
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .forms import SignUpForm ,UpdateUserForm, ChangePasswordForm
+from .forms import SignUpForm ,UpdateUserForm, ChangePasswordForm , UserInfoForm
 
 def home(request) :
     products = Product.objects.all()
@@ -45,8 +45,8 @@ def register_user(request):
 			# log in user
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			messages.success(request, ("You Have Registered Successfully!"))
-			return redirect('home')
+			messages.success(request, ("Register Was Successful, PLease Fill Out Billing Info."))
+			return redirect('update_info')
 		else: #if the form data is not filled correctly
 			messages.success(request, ("Error Try Again!"))
 			return redirect('register')
@@ -115,3 +115,27 @@ def update_password(request):
 		messages.success(request, "You Must Be Logged In To View That Page.")
 		return redirect('home')
 	
+
+def update_info(request):
+	if request.user.is_authenticated:
+		# Get Current User
+		current_user = Profile.objects.get(user__id=request.user.id)
+		# Get Current User's Shipping Info
+		#shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
+		
+		# Get original User Form
+		form = UserInfoForm(request.POST or None, instance=current_user)
+		# Get User's Shipping Form
+		#shipping_form = ShippingForm(request.POST or None, instance=shipping_user)		
+		if form.is_valid():
+			# Save original form
+			form.save()
+			# Save shipping form
+			#shipping_form.save()
+
+			messages.success(request, "Your Info Has Been Updated!!")
+			return redirect('home')
+		return render(request, "update_info.html", {'form':form})
+	else:
+		messages.success(request, "You Must Be Logged In To Access That Page!!")
+		return redirect('home')
