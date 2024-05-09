@@ -4,6 +4,8 @@ from payment.forms import ShippingForm , PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib import messages
 from django.contrib.auth.models import User
+from cart.cart import Cart
+from store.models import Profile
 
 def payment_success(request):
 	return render(request, "payment/checkout.html", {})
@@ -108,11 +110,18 @@ def process_order(request):
 						create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
 						create_order_item.save()
 			
+			#there is a problem it the user logout and again comes back then the cart items are still there by deleting the session the session is deleted but the in the back end the old cart field in profile of user still holds the cart thing so lets update it 
+			#current_user = Profile.objects.filter(user__id=user.id) 
+			#current_user.update(old_cart=str())
+
+
+
 			# Delete our cart
 			for key in list(request.session.keys()):
 				if key == "session_key":
 					# Delete the key
 					del request.session[key]
+
 
 			messages.success(request,"Order Placed")
 			return redirect('home')
