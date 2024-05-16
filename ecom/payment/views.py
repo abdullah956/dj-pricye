@@ -122,7 +122,16 @@ def process_order(request):
 					# Delete the key
 					del request.session[key]
 
-
+            #clearing cart form the database
+			# Get the current user profile
+			current_user = Profile.objects.get(user_id=request.user.id)
+			# Set dcart to an empty dictionary
+			cart = {}
+			carty = str(cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.old_cart = carty
+			current_user.save()
 			messages.success(request,"Order Placed")
 			return redirect('home')
 		else :
