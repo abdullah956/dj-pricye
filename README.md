@@ -1,1 +1,1 @@
-# Django-Ecom
+# dj-ecom
